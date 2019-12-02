@@ -8,8 +8,6 @@ from remidi_enums.colors import rg_colors
 logger = mylogging.setup_logger("launchpad")
 
 
-
-
 class Launchpad(object):
     """docstring for Launchpad_con."""
 
@@ -76,6 +74,17 @@ class Launchpad(object):
         self.reset_note_bar(outport)
         self.reset_control_bar(outport)
 
+    def send_to_launchpad(self, msg_list):
+        if isinstance(msg_list, list) and len(msg_list) > 0:
+            with mido.open_output("Launchpad Mini 1") as outport:
+                if isinstance(msg_list[0], mido.Message):
+                    for msg in msg_list:
+                        outport.send(msg)
+                else:
+                    raise TypeError("msg list must only contain mido.Message, not: "+type(msg))
+        else:
+            raise TypeError("msg_list must be a list, not: "+type(msg))
+
 
 class Launchpad_Mini_Mk2(Launchpad):
     """docstring for Launchpad_Mini_Mk2."""
@@ -93,22 +102,18 @@ class Launchpad_Mini_Mk2(Launchpad):
         self._note_bar = range(9, 121, 16)
         self._control_bar = range(104, 113)
         super(Launchpad_Mini_Mk2, self).__init__()
-        # with mido.open_output("Launchpad Mini 1") as outport:
-        #     self.outport = outport
-
-
 
 
 def main():
     logger.debug(mido.get_output_names())
     lp = Launchpad_Mini_Mk2()
-    logger.debug(lp.inport)
-    logger.debug(lp.outport)
+    # logger.debug(lp.inport)
+    # logger.debug(lp.outport)
     # lp.reset_all(lp.outport)
-    # lp.set_note_grid_color(3, 3, colors.RED.value, lp.outport)
-    # lp.set_note_grid_color(3, 4, colors.ORANGE.value, lp.outport)
-    # lp.set_note_grid_color(4, 3, colors.ORANGE.value, lp.outport)
-    # lp.set_note_grid_color(4, 4, colors.RED.value, lp.outport)
+    lp.set_note_grid_color(3, 3, colors.RED.value, lp.outport)
+    lp.set_note_grid_color(3, 4, colors.ORANGE.value, lp.outport)
+    lp.set_note_grid_color(4, 3, colors.ORANGE.value, lp.outport)
+    lp.set_note_grid_color(4, 4, colors.RED.value, lp.outport)
     #
     # for row in range(0, 4):
     #     for col in range(0, 4):
@@ -116,4 +121,5 @@ def main():
     #             row, col, rg_colors.get_rg_value(row, col), lp.outport)
 
 
-main()
+if __name__ == "__main__":
+    main()
