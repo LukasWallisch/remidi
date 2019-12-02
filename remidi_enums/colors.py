@@ -1,7 +1,12 @@
 from enum import Enum
 
 
-class rg_colors(Enum):
+class myEnum(Enum):
+    def __str__(self):
+        return self.name
+
+
+class rg_colors(myEnum):
     R0G0 = 0
     R1G0 = 1
     R2G0 = 2
@@ -32,7 +37,8 @@ class rg_colors(Enum):
         value = rg_colors.get_rg_value(red, green)
         rg_colors[value]
 
-class colors(Enum):
+
+class colors(myEnum):
     BLACK = rg_colors.R0G0.value
     RED = rg_colors.R3G0.value
     ORANGE = rg_colors.R2G3.value
