@@ -1,12 +1,12 @@
 from enum import Enum
 
 
-class myEnum(Enum):
+class MyEnum(Enum):
     def __str__(self):
         return self.name
 
 
-class rg_colors(myEnum):
+class RG_Colors(MyEnum):
     R0G0 = 0
     R1G0 = 1
     R2G0 = 2
@@ -34,12 +34,12 @@ class rg_colors(myEnum):
 
     @staticmethod
     def get_rg_name(red, green):
-        value = rg_colors.get_rg_value(red, green)
-        rg_colors[value]
+        value = RG_Colors.get_rg_value(red, green)
+        RG_Colors[value]
 
 
-class colors(myEnum):
-    BLACK = rg_colors.R0G0.value
-    RED = rg_colors.R3G0.value
-    ORANGE = rg_colors.R2G3.value
-    GREEN = rg_colors.R0G3.value
+class Colors(MyEnum):
+    BLACK = RG_Colors.R0G0.value
+    RED = RG_Colors.R3G0.value
+    ORANGE = RG_Colors.R2G3.value
+    GREEN = RG_Colors.R0G3.value

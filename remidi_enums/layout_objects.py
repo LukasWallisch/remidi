@@ -2,7 +2,7 @@ from enum import Enum, auto
 
 
 class BarType(Enum):
-    """docstring for tile_state."""
+    """docstring for TileState."""
     VERTICAL = auto()
     HORIZONTAL = auto()
 

@@ -2,8 +2,8 @@ import mylogging
 import mido
 from datetime import datetime
 import time
-from remidi_enums.colors import colors
-from remidi_enums.colors import rg_colors
+from remidi_enums.Colors import Colors
+from remidi_enums.Colors import RG_Colors
 
 logger = mylogging.setup_logger("launchpad")
 
@@ -86,8 +86,8 @@ class Launchpad(object):
             raise TypeError("msg_list must be a list, not: "+type(msg))
 
 
-class Launchpad_Mini_Mk2(Launchpad):
-    """docstring for Launchpad_Mini_Mk2."""
+class LaunchpadMiniMk2(Launchpad):
+    """docstring for LaunchpadMiniMk2."""
 
     def __init__(self):
         self.name = "Launchpad Mini 1"
@@ -101,24 +101,24 @@ class Launchpad_Mini_Mk2(Launchpad):
                            range(102, 111)]
         self._note_bar = range(9, 121, 16)
         self._control_bar = range(104, 113)
-        super(Launchpad_Mini_Mk2, self).__init__()
+        super(LaunchpadMiniMk2, self).__init__()
 
 
 def main():
     logger.debug(mido.get_output_names())
-    lp = Launchpad_Mini_Mk2()
+    lp = LaunchpadMiniMk2()
     # logger.debug(lp.inport)
     # logger.debug(lp.outport)
     # lp.reset_all(lp.outport)
-    lp.set_note_grid_color(3, 3, colors.RED.value, lp.outport)
-    lp.set_note_grid_color(3, 4, colors.ORANGE.value, lp.outport)
-    lp.set_note_grid_color(4, 3, colors.ORANGE.value, lp.outport)
-    lp.set_note_grid_color(4, 4, colors.RED.value, lp.outport)
+    lp.set_note_grid_color(3, 3, Colors.RED.value, lp.outport)
+    lp.set_note_grid_color(3, 4, Colors.ORANGE.value, lp.outport)
+    lp.set_note_grid_color(4, 3, Colors.ORANGE.value, lp.outport)
+    lp.set_note_grid_color(4, 4, Colors.RED.value, lp.outport)
     #
     # for row in range(0, 4):
     #     for col in range(0, 4):
     #         lp.set_note_grid_color(
-    #             row, col, rg_colors.get_rg_value(row, col), lp.outport)
+    #             row, col, RG_Colors.get_rg_value(row, col), lp.outport)
 
 
 if __name__ == "__main__":

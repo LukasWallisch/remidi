@@ -1,17 +1,17 @@
-from remidi_enums.tile_states import tile_state
+from remidi_enums.tile_states import TileState
 from remidi_enums.layout_objects import BarType
-from remidi_enums.colors import colors
+from remidi_enums.Colors import Colors
 from tabulate import tabulate
 import mylogging
 
 logger = mylogging.setup_logger("layouts")
 
 
-class view_grid(object):
+class ViewGrid(object):
     """docstring for note_grid."""
 
     def __init__(self):
-        self._grid = [[tile_state.EMPTY for x in range(8)] for y in range(8)]
+        self._grid = [[TileState.EMPTY for x in range(8)] for y in range(8)]
 
     @property
     def grid(self):
@@ -35,11 +35,11 @@ class view_grid(object):
         return "\n" + tabulate(output_data, output_header)
 
 
-class view_bar(object):
+class ViewBar(object):
     """docstring for note_grid."""
 
     def __init__(self, bar_type):
-        self._bar = [colors.BLACK for x in range(8)]
+        self._bar = [Colors.BLACK for x in range(8)]
         if isinstance(bar_type, BarType):
             self.header = bar_type.header()
             logger.debug(self.header)
@@ -61,15 +61,15 @@ class view_bar(object):
         return "\n" + tabulate(output_data, output_header)
 
 
-class view_v_bar(view_bar):
+class ViewVBar(ViewBar):
     """docstring for note_grid."""
 
     def __init__(self):
-        super(view_v_bar, self).__init__(BarType.VERTICAL)
+        super(ViewVBar, self).__init__(BarType.VERTICAL)
 
 
-class view_h_bar(view_bar):
+class ViewHBar(ViewBar):
     """docstring for note_grid."""
 
     def __init__(self):
-        super(view_h_bar, self).__init__(BarType.HORIZONTAL)
+        super(ViewHBar, self).__init__(BarType.HORIZONTAL)
