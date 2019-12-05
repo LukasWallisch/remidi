@@ -1,6 +1,5 @@
-from remidi_enums.tile_states import TileState
-from remidi_enums.layout_objects import BarType
-from remidi_enums.Colors import Colors
+from remidi_view.view_enums.layout_objects import BarType
+from remidi_view.view_enums.colors import Colors
 from tabulate import tabulate
 import mylogging
 
@@ -11,13 +10,13 @@ class ViewGrid(object):
     """docstring for note_grid."""
 
     def __init__(self):
-        self._grid = [[TileState.EMPTY for x in range(8)] for y in range(8)]
+        self._grid = [[Colors.BLACK for x in range(8)] for y in range(8)]
 
     @property
     def grid(self):
         return self._grid
 
-    def set_tiles(self, tile_list):
+    def display_board(self, board):
         raise NotImplementedError("comming soon")
 
     def __str__(self):

@@ -2,8 +2,8 @@ import mylogging
 import mido
 from datetime import datetime
 import time
-from remidi_enums.Colors import Colors
-from remidi_enums.Colors import RG_Colors
+from remidi_view.view_enums.colors import Colors
+from remidi_view.view_enums.colors import RG_Colors
 
 logger = mylogging.setup_logger("launchpad")
 
