@@ -96,6 +96,9 @@ class ReversiBoard(Board):
         else:
             return True, None
 
+    def set_tile(self, x, y, player):
+        super(ReversiBoard, self).set_tile(x, y, player.tile_state)
+
     def copy(self):
         board = ReversiBoard()
         board.board = self.board
