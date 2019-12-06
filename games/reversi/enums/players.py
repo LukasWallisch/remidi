@@ -1,4 +1,5 @@
 from enum import Enum, auto
+from remidi.games.reversi.enums.board_enums import TileState
 
 
 class PlayerType(Enum):
@@ -17,4 +18,13 @@ class PlayerType(Enum):
         elif self is PlayerType.PLAYER_2:
             return PlayerType.PLAYER_1
         else:
-            raise ValueError("PlayerType NOBODY has no opponent! ")
+            return PlayerType.NOBODY
+
+    @property
+    def tile_state(self):
+        if self is PlayerType.PLAYER_1:
+            return TileState.PLAYER_1
+        elif self is PlayerType.PLAYER_2:
+            return TileState.PLAYER_2
+        else:
+            return TileState.EMPTY
