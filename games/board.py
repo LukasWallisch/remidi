@@ -44,8 +44,8 @@ class Board(object):
 
     def get_data(self):
         data = [[str(tile) for tile in row] for row in self.board]
-        output = tabulate(data)
-        return output
+        output = tabulate(data, tablefmt="grid")
+        return "\n"+output
 
     def __str__(self):
         return str(self.get_data())

@@ -22,6 +22,19 @@ class TileState(Enum):
     def __str__(self):
         return self.name[0]+self.name[-1]
 
+    def __str__(self):
+        if self is TileState.PLAYER_1:
+            return "░"
+        elif self is TileState.PLAYER_2:
+            return "▓"
+        elif self is TileState.POSSIBLE:
+            return "X"
+        elif self is TileState.EMPTY:
+            return " "
+        else:
+            raise ValueError("unkown TileState")
+
+
     def __repr__(self):
         return self.name[0]+self.name[-1]
 
