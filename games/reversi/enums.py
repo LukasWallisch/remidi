@@ -14,10 +14,8 @@ class TileState(Enum):
             return PlayerType.PLAYER_1
         elif self is TileState.PLAYER_2:
             return PlayerType.PLAYER_2
-        elif self is TileState.EMPTY:
+        elif self is TileState.EMPTY or self is TileState.POSSIBLE:
             return PlayerType.NOBODY
-        else:
-            return None
 
     def __str__(self):
         return self.name[0]+self.name[-1]
