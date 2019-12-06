@@ -1,8 +1,8 @@
 import mylogging
 
-from games.reversi.enums.board_enums import TileState
-from games.reversi.enums.board_enums import Directions
-from games.reversi.enums.board_enums import PlayerType
+from games.reversi.enums import TileState
+from games.reversi.enums import Directions
+from games.reversi.enums import PlayerType
 from games.board import Board
 
 logger = mylogging.setup_logger("Board")

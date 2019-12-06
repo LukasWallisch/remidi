@@ -1,7 +1,7 @@
 import mylogging
 
 from games.reversi.board import ReversiBoard
-from games.reversi.enums.players import PlayerType
+from games.reversi.enums import PlayerType
 
 logger = mylogging.setup_logger("reversi")
 
