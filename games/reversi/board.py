@@ -2,7 +2,7 @@ import mylogging
 
 from games.reversi.enums.board_enums import TileState
 from games.reversi.enums.board_enums import Directions
-from games.reversi.enums.players import PlayerType
+from games.reversi.enums.board_enums import PlayerType
 from games.board import Board
 
 logger = mylogging.setup_logger("Board")
@@ -107,7 +107,7 @@ class ReversiBoard(Board):
     def reset(self):
         self.board = [
             [TileState.EMPTY for i in range(0, 8)]for i in range(0, 8)]
-        self.set_tile(3, 3, TileState.PLAYER_1)
-        self.set_tile(3, 4, TileState.PLAYER_2)
-        self.set_tile(4, 3, TileState.PLAYER_2)
-        self.set_tile(4, 4, TileState.PLAYER_1)
+        self.set_tile(3, 3, PlayerType.PLAYER_1)
+        self.set_tile(3, 4, PlayerType.PLAYER_2)
+        self.set_tile(4, 3, PlayerType.PLAYER_2)
+        self.set_tile(4, 4, PlayerType.PLAYER_1)
