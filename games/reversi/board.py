@@ -88,6 +88,42 @@ class ReversiBoard(Board):
                 # logger.debug("Tile rejected")
                 return TileState.EMPTY
 
+    def _set_direction_tiles(self, direction, row, col, player, initial=True):
+        d_row, d_col = direction.value
+        row += d_row
+        col += d_col
+        if not (row >= 0 and row < 8 and col >= 0 and col < 8):
+            # logger.debug("not on Board")
+            return False
+        # else:
+        #     logger.debug("d: %s r: %s c: %s p: %s i: %s t: %s" %
+        #                  (direction, row, col, player,
+        #                   initial, self.board[row][col]))
+        if initial is True:
+            if self.board[row][col].owner is player.opponent:
+                # logger.debug("next step:")
+                if self._set_direction_tiles(direction, row,
+                                            col, player, False):
+                    self.board[row][col] = player.tile_state
+                    return True
+            else:
+                # logger.debug("Tile rejected")
+                return False
+        else:
+            if self.board[row][col].owner is player:
+                # logger.debug("Tile accepted")
+                self.board[row][col] = player.tile_state
+                return True
+            elif self.board[row][col].owner is player.opponent:
+                # logger.debug("next step:")
+                if self._set_direction_tiles(direction, row,
+                                            col, player, False):
+                    self.board[row][col] = player.tile_state
+                    return True
+            else:
+                # logger.debug("Tile rejected")
+                return False
+
     def check_tile(self, tile):
         if not isinstance(tile, TileState):
             error = TypeError("tile_state must be from type 'TileState' not: "
@@ -98,6 +134,11 @@ class ReversiBoard(Board):
 
     def set_tile(self, x, y, player):
         super(ReversiBoard, self).set_tile(x, y, player.tile_state)
+
+    def do_move(self, row, col, player):
+        self.set_tile(row, col, player)
+        for d in Directions:
+            self._set_direction_tiles(d, row, col, player)
 
     def copy(self):
         board = ReversiBoard()
