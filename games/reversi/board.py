@@ -1,6 +1,7 @@
 import mylogging
 
 from games.reversi.enums.board_enums import TileState
+from games.reversi.enums.board_enums import Directions
 from games.reversi.enums.players import PlayerType
 from games.board import Board
 
@@ -30,20 +31,62 @@ class ReversiBoard(Board):
                 raise TypeError("Wrong Playertype on Board")
         return (p1_score, p2_score, empty)
 
-    def possible_for_player(self, player):
+    def possible_tiles(self, player):
         if not isinstance(player, PlayerType):
             raise TypeError("Type should be PlayerType, not: "
                             + str(type(player)))
         elif player is PlayerType.NOBODY:
             raise ValueError("PlayerType must not be NOBODY!")
         else:
-            directions = [(x, y) for x in range(-1, 2) for y in range(-1, 2)]
-            logger.debug(directions)
-            for d in directions:
-                logger.debug(d)
+            result_board = []
+            possible_list = []
+            for row in range(0, 8):
+                row_r = []
+                for col in range(0, 8):
+                    if not self.board[row][col] is TileState.EMPTY:
+                        row_r.append(self.board[row][col])
+                    else:
+                        direction_result = TileState.EMPTY
+                        for d in Directions:
+                            direction_result = self._tile_possible(
+                                d, row, col, player)
+                            if direction_result is TileState.POSSIBLE:
+                                possible_list.append((row, col))
+                                break
+                        row_r.append(direction_result)
+                result_board.append(row_r)
+            possible_board = ReversiBoard()
+            possible_board.board = result_board
+            return possible_board, possible_list
 
-    def check_direction_possible(self, direction):
-        pass
+    def _tile_possible(self, direction, row, col, player, initial=True):
+        d_row, d_col = direction.value
+        row += d_row
+        col += d_col
+        if not (row >= 0 and row < 8 and col >= 0 and col < 8):
+            # logger.debug("not on Board")
+            return TileState.EMPTY
+        # else:
+        #     logger.debug("d: %s r: %s c: %s p: %s i: %s t: %s" %
+        #                  (direction, row, col, player,
+        #                   initial, self.board[row][col]))
+        if initial is True:
+            if self.board[row][col].owner is player.opponent:
+                # logger.debug("next step:")
+                return self._tile_possible(direction, row, col, player, False)
+            else:
+                # logger.debug("Tile rejected")
+                return TileState.EMPTY
+        else:
+            if self.board[row][col].owner is player:
+                # logger.debug("Tile accepted")
+                return TileState.POSSIBLE
+            elif self.board[row][col].owner is player.opponent:
+                # logger.debug("next step:")
+                return self._tile_possible(direction, row, col, player, False)
+            else:
+                # logger.debug("Tile rejected")
+                return TileState.EMPTY
 
     def check_tile(self, tile):
         if not isinstance(tile, TileState):
