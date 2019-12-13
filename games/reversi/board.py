@@ -31,6 +31,17 @@ class ReversiBoard(Board):
                 raise TypeError("Wrong Playertype on Board")
         return (p1_score, p2_score, empty)
 
+    def score_for_player(self, player):
+        if player is PlayerType.PLAYER_1:
+            score = self.current_scores[0]
+        elif player is PlayerType.PLAYER_2:
+            score = self.current_scores[1]
+        elif player is PlayerType.NOBODY:
+            score = self.current_scores[2]
+        else:
+            raise TypeError("Wrong Playertype on given")
+        return score
+
     def possible_tiles(self, player):
         if not isinstance(player, PlayerType):
             raise TypeError("Type should be PlayerType, not: "
