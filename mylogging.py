@@ -9,7 +9,7 @@ def setup_logger(logger_name):
 
     logger_name: name for new Logger
     """
-    logger = logging.Logger(logger_name)
+    logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG)
     sh = logging.StreamHandler()
     formatter_string = '%(asctime)s '
@@ -24,11 +24,19 @@ def setup_logger(logger_name):
     return logger
 
 
+def set_logger_lvl(logger_name, lvl):
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(lvl)
+
+
 def test_logging(test_message):
     """Test method if loggingsetup worked."""
-    logger = setup_logging("Logging")
+    logger = setup_logger("Logging")
     logger.debug(test_message)
     logger.info(test_message)
     logger.warning(test_message)
     logger.error(test_message)
     logger.critical(test_message)
+
+    logger.debug(logger)
+    logger.debug(logging.getLogger("Logging"))
