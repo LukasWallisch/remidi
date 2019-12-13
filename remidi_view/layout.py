@@ -1,4 +1,7 @@
 from remidi_view.view_enums.layout_objects import BarType
+from remidi_view.view_enums.layout_objects import TileType
+from remidi_view.view_enums.layout_objects import TileAction
+from remidi_view.view_enums.layout_objects import TileGroup
 from remidi_view.view_enums.colors import Colors
 from tabulate import tabulate
 import mylogging
@@ -72,3 +75,70 @@ class ViewHBar(ViewBar):
 
     def __init__(self):
         super(ViewHBar, self).__init__(BarType.HORIZONTAL)
+
+
+class TileEvent(object):
+    """docstring for note_grid."""
+
+    def __init__(self, tile_type, action, position, tile_group):
+        self.type = tile_type
+        self.action = action
+        self.group = tile_group
+        self.position = position
+
+    @property
+    def type(self):
+        return self.__tile_type
+
+    @type.setter
+    def type(self, tile_type):
+        if isinstance(tile_type, TileType):
+            self.__tile_type = tile_type
+        else:
+            raise TypeError("tile_type can only be type TileType not: "
+                            + str(type(tile_type)))
+
+    @property
+    def position(self):
+        return self.__position
+
+    @position.setter
+    def position(self, position):
+        logger.debug(position)
+        if self.group is TileGroup.NOTE_GRID \
+                and isinstance(position, tuple):
+            self.__position = position
+        elif self.group in [TileGroup.NOTE_BAR, TileGroup.CONTROL_BAR] \
+                and isinstance(position, int):
+            self.__position = position
+        else:
+            raise ValueError("position has wrong format")
+
+    @property
+    def action(self):
+        return self.__action
+
+    @action.setter
+    def action(self, action):
+        if isinstance(action, TileAction):
+            self.__action = action
+        else:
+            raise TypeError("action can only be type TileAction not: "
+                            + str(type(action)))
+
+    @property
+    def group(self):
+        return self.__tile_group
+
+    @group.setter
+    def group(self, tile_group):
+        if isinstance(tile_group, TileGroup):
+            self.__tile_group = tile_group
+        else:
+            raise TypeError("tile_group can only be type TileGroup not: "
+                            + str(type(tile_group)))
+
+    def __str__(self):
+        output = ("TileEvent:\ntype: %5s Action: %11s pos: %s group: %s"
+                  % (self.type, self.action, str(self.position), str(self.group)))
+        return output

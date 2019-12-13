@@ -13,3 +13,19 @@ class BarType(Enum):
             return list(map((lambda x: str(x)), range(1, 9)))
         else:
             raise ValueError("Unknown bar_type: " + str(self))
+
+
+class TileType(Enum):
+    NOTE = auto()
+    CONTROL = auto()
+
+
+class TileGroup(Enum):
+    NOTE_GRID = auto()
+    NOTE_BAR = auto()
+    CONTROL_BAR = auto()
+
+
+class TileAction(Enum):
+    PRESS = auto()
+    RELEASE = auto()
