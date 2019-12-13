@@ -41,5 +41,5 @@ class RG_Colors(MyEnum):
 class Colors(MyEnum):
     BLACK = RG_Colors.R0G0.value
     RED = RG_Colors.R3G0.value
-    ORANGE = RG_Colors.R2G3.value
+    ORANGE = RG_Colors.R3G2.value
     GREEN = RG_Colors.R0G3.value

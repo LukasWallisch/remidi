@@ -1,4 +1,5 @@
 from enum import Enum, auto
+from remidi_view.view_enums.colors import Colors
 
 
 class TileState(Enum):
@@ -16,6 +17,19 @@ class TileState(Enum):
             return PlayerType.PLAYER_2
         elif self is TileState.EMPTY or self is TileState.POSSIBLE:
             return PlayerType.NOBODY
+
+    @property
+    def color(self):
+        if self is TileState.PLAYER_1:
+            return Colors.RED
+        elif self is TileState.PLAYER_2:
+            return Colors.ORANGE
+        elif self is TileState.POSSIBLE:
+            return Colors.GREEN
+        elif self is TileState.EMPTY:
+            return Colors.BLACK
+        else:
+            raise ValueError("unkown TileState")
 
     def __str__(self):
         return self.name[0]+self.name[-1]
