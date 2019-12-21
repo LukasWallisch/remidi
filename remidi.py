@@ -14,8 +14,8 @@ logger = mylogging.setup_logger("remidi")
 
 
 def main():
-    for logger in config.logger_levels:
-        mylogging.set_logger_lvl(logger, config.logger_levels[logger])
+    for l in config.logger_levels:
+        mylogging.set_logger_lvl(l, config.logger_levels[l])
     rv = Reversi(PlayerType.PLAYER_1, 0)
     t0 = time.time()
     rv.run()
