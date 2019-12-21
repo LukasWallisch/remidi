@@ -326,7 +326,25 @@ class DisplayChars():
                    [True, False, False, False],
                    [True, False, False, False],
                    [True, False, False, False],
-                   [True, True, True, False]]}
+                   [True, True, True, False]],
+
+             " ": [[False, False, False, False],
+                   [False, False, False, False],
+                   [False, False, False, False],
+                   [False, False, False, False],
+                   [False, False, False, False],
+                   [False, False, False, False],
+                   [False, False, False, False],
+                   [False, False, False, False]],
+
+             "!": [[True, False, True, False],
+                   [True, False, True, False],
+                   [True, False, True, False],
+                   [True, False, True, False],
+                   [True, False, True, False],
+                   [True, False, True, False],
+                   [False, False, False, False],
+                   [True, False, True, False]]}
 
 
 class CharDisplay():
@@ -346,8 +364,6 @@ class CharDisplay():
 
     def concat(self, char):
         next_char = DisplayChars.chars[char]
-        logger.debug(char)
-        logger.debug(next_char)
         for r in range(8):
             self.display[r].extend(next_char[r])
 

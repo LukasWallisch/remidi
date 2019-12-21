@@ -105,28 +105,7 @@ class Reversi(object):
             return True
 
         else:
-            self.display_board(self.board)
-            logger.debug("Game Finished")
-            tile_event = self.launchpad.get_input()
-            if tile_event.group is TileGroup.NOTE_GRID \
-                    or(tile_event.group is TileGroup.CONTROL_BAR
-                       and tile_event.position == 6):
-                self.steps = []
-                self.board.reset()
-                self.current_player = self.start_player
-                return True
-            elif tile_event.group is TileGroup.CONTROL_BAR \
-                    and tile_event.position == 5:
-                self.steps.pop()
-                board, player = self.steps.pop()
-                logger.debug(board)
-                logger.debug(player)
-                self.board = board
-                self.current_player = player
-                self.steps.append((self.board.copy(), self.current_player))
-                return True
-            else:
-                return False
+            return self.game_end()
 
     def next_step(self, current_player, initial=True):
         """Retruns the next player, if there isn't a valid move for any
@@ -143,6 +122,47 @@ class Reversi(object):
                 return b, possible_tiles, PlayerType.NOBODY
         else:
             return (b, possible_tiles, next_player)
+
+    def game_end(self):
+        """Returns if True if a theres a step after this one.
+        this could be the case if 'undo' was pressed"""
+        self.display_board(self.board)
+        logger.debug("Game Finished")
+        self.display_score()
+        tile_event = self.launchpad.get_input()
+        if tile_event.group is TileGroup.NOTE_GRID \
+                or(tile_event.group is TileGroup.CONTROL_BAR
+                   and tile_event.position == 6):
+            self.steps = []
+            self.board.reset()
+            self.current_player = self.start_player
+            return True
+        elif tile_event.group is TileGroup.CONTROL_BAR \
+                and tile_event.position == 5:
+            self.steps.pop()
+            board, player = self.steps.pop()
+            logger.debug(board)
+            logger.debug(player)
+            self.board = board
+            self.current_player = player
+            self.steps.append((self.board.copy(), self.current_player))
+            return True
+        else:
+            return False
+
+    def display_score(self):
+        best_player = PlayerType.NOBODY
+        highscore = 0
+        for p in [PlayerType.PLAYER_1, PlayerType.PLAYER_2]:
+            score = self.board.score_for_player(p)
+            if score > highscore:
+                best_player = p
+                highscore = score
+
+        self.launchpad.display_text_on_notegrid(
+            "  "+str(best_player)+" has won!", best_player.tile_state.color)
+        self.launchpad.display_text_on_notegrid(
+            score, best_player.tile_state.color)
 
     def get_player_move(self, possible_tiles):
         tile_event = self.launchpad.get_input()
