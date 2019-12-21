@@ -11,6 +11,8 @@ from remidi_view.view_enums.layout_objects import TileAction
 from remidi_view.view_enums.layout_objects import TileGroup
 from remidi_view.layout import TileEvent
 
+import config
+
 logger = mylogging.setup_logger("launchpad")
 
 
@@ -136,53 +138,66 @@ class Launchpad(object):
 
     def send_to_launchpad(self, msg_list):
         if isinstance(msg_list, list) and len(msg_list) > 0:
-            with mido.open_output("Launchpad Mini 1") as outport:
-                # logger.debug("Send to Launchpad: "+str(msg_list))
-                if isinstance(msg_list[0], mido.Message):
-                    for msg in msg_list:
-                        outport.send(msg)
-                else:
-                    raise TypeError(
-                        "msg list must only contain mido.Message, not: "+type(msg))
+            try:
+                with mido.open_output(config.Launchpad_output) as outport:
+                    # logger.debug("Send to Launchpad: "+str(msg_list))
+                    if isinstance(msg_list[0], mido.Message):
+                        for msg in msg_list:
+                            outport.send(msg)
+                    else:
+                        raise TypeError(
+                            "msg list must only contain "
+                            + "mido.Message, not: " + type(msg))
+            except IOError as e:
+                logger.error("The outport: "+config.Launchpad_output
+                             + "doesn't exist. Currently aviable: "
+                             + str(mido.get_output_names()))
+                raise e
         else:
             raise TypeError("msg_list must be a list, not: "+type(msg))
 
     def get_input(self):
-        with mido.open_input() as inport:
-            for in_msg in inport:
-                if in_msg.type == "note_on":
-                    tile = in_msg.note
-                    tile_type = TileType.NOTE
-                    value = in_msg.velocity
-                elif in_msg.type == "control_change":
-                    tile = in_msg.control
-                    tile_type = TileType.CONTROL
-                    value = in_msg.value
-                else:
-                    raise ValueError("Unknown msg.type: " + str(in_msg.type))
+        try:
+            with mido.open_input(config.Launchpad_input) as inport:
+                for in_msg in inport:
+                    if in_msg.type == "note_on":
+                        tile = in_msg.note
+                        tile_type = TileType.NOTE
+                        value = in_msg.velocity
+                    elif in_msg.type == "control_change":
+                        tile = in_msg.control
+                        tile_type = TileType.CONTROL
+                        value = in_msg.value
+                    else:
+                        raise ValueError("Unknown msg.type: "
+                                         + str(in_msg.type))
 
-                tile_group = self.get_tile_group(tile, tile_type)
+                    tile_group = self.get_tile_group(tile, tile_type)
 
-                if value == 127:
-                    action = TileAction.PRESS
-                elif value == 0:
-                    action = TileAction.RELEASE
-                    tile_press = TileEvent(
-                        tile_type,
-                        action,
-                        self.midi2py_tile_id(tile, tile_group),
-                        tile_group)
-                    return tile_press
-                else:
-                    raise ValueError("Unknown Value: %s for tile: %d"
-                                     % str(value), tile)
+                    if value == 127:
+                        action = TileAction.PRESS
+                    elif value == 0:
+                        action = TileAction.RELEASE
+                        tile_press = TileEvent(
+                            tile_type,
+                            action,
+                            self.midi2py_tile_id(tile, tile_group),
+                            tile_group)
+                        return tile_press
+                    else:
+                        raise ValueError("Unknown Value: %s for tile: %d"
+                                         % str(value), tile)
+        except IOError as e:
+            logger.error("The inport: "+config.Launchpad_output
+                         + "doesn't exist. Currently aviable: "
+                         + str(mido.get_input_names()))
+            raise e
 
 
 class LaunchpadMiniMk2(Launchpad):
     """docstring for LaunchpadMiniMk2."""
 
     def __init__(self):
-        self.name = "Launchpad Mini 1"
         self._note_grid = [range(0, 8),
                            range(16, 24),
                            range(32, 40),
