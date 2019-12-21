@@ -2,13 +2,15 @@ import mylogging
 import mido
 from itertools import chain
 
-from datetime import datetime
+import time
 import json
 from remidi_view.view_enums.colors import Colors
 from remidi_view.view_enums.colors import RG_Colors
 from remidi_view.view_enums.layout_objects import TileType
 from remidi_view.view_enums.layout_objects import TileAction
 from remidi_view.view_enums.layout_objects import TileGroup
+from remidi_view.view_enums.display_chars import DisplayChars
+from remidi_view.view_enums.display_chars import CharDisplay
 from remidi_view.layout import TileEvent
 
 import config
@@ -115,14 +117,18 @@ class Launchpad(object):
                     row, col, grid[row][col]))
         self.send_to_launchpad(msg_list)
 
-    def display_text_on_notegrid(self, text):
-        if isinstance(text, str):
-            if len(text) == 2:
-                msg_list = []
-                for char in text:
-                    pass
-
-                self.send_to_launchpad(msg_list)
+    def display_text_on_notegrid(self, text, color):
+        text = str(text)
+        cd = CharDisplay(text.upper())
+        if len(text) <= 2:
+            grid = cd.get_grid(color)
+            logger.debug(grid)
+            self.display_grid_on_notegrid(grid)
+        else:
+            for dp_steps in range((len(text)-2)*4):
+                grid = cd.get_grid(color)
+                self.display_grid_on_notegrid(grid)
+                time.sleep(0.1)
 
     def display_on_note_bar(self, bar):
         msg_list = []
