@@ -122,7 +122,6 @@ class Launchpad(object):
         cd = CharDisplay(text.upper())
         if len(text) <= 2:
             grid = cd.get_grid(color)
-            logger.debug(grid)
             self.display_grid_on_notegrid(grid)
         else:
             for dp_steps in range((len(text)-2)*4):
