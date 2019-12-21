@@ -164,7 +164,11 @@ class Launchpad(object):
 
     def get_input(self):
         try:
-            with mido.open_input(config.Launchpad_input) as inport:
+            if config.Launchpad_input == "":
+                open_method = mido.open_input()
+            else:
+                open_method = mido.open_input(config.Launchpad_input)
+            with open_method as inport:
                 for in_msg in inport:
                     if in_msg.type == "note_on":
                         tile = in_msg.note
