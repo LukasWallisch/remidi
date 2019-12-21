@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
+import time
 
 import mylogging
-import time
+import config
 from remidi_view import lauchpad
 # from remidi_view.layout import ViewGrid, ViewHBar, ViewVBar
 from games.reversi.reversi import Reversi
@@ -13,7 +14,8 @@ logger = mylogging.setup_logger("remidi")
 
 
 def main():
-    mylogging.set_logger_lvl("launchpad", mylogging.logging.INFO)
+    for logger in config.logger_levels:
+        mylogging.set_logger_lvl(logger, config.logger_levels[logger])
     rv = Reversi(PlayerType.PLAYER_1, 0)
     t0 = time.time()
     rv.run()
