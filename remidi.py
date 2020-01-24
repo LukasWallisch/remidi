@@ -3,6 +3,7 @@
 import mylogging
 import time
 from remidi_view import lauchpad
+from remidi_view.view_enums.colors import Colors
 # from remidi_view.layout import ViewGrid, ViewHBar, ViewVBar
 from games.reversi.reversi import Reversi
 from games.reversi.enums import PlayerType
@@ -19,7 +20,11 @@ def main():
     rv.run()
     t1 = time.time()
     logger.debug(t1-t0)
-    # lp= lauchpad.LaunchpadMiniMk2()
+
+def main_test():
+    lp = lauchpad.LaunchpadMiniMk2()
+    lp.display_text_on_notegrid("Reversi", Colors.RED)
+    time.sleep(2)
 
     # board2.check_possible(Directions.SOUTH_EAST, 2, 2, PlayerType.PLAYER_1,True)
     # logger.debug("board2.current_scores\n" + str(board2.current_scores))
@@ -42,3 +47,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # main_test()
